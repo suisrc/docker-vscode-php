@@ -310,6 +310,7 @@ WORKDIR /var/www/html
 RUN set -eux; \
 	apt-get update; \
     apt-get install --no-install-recommends -y \
+		s6 \
         build-essential \
         libssl-dev \
         zlib1g-dev \
