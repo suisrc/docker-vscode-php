@@ -25,6 +25,7 @@ RUN echo "**** install nodejs ****" &&\
 
 # config china npm and aliyun yarn
 RUN npm install -g cnpm yarn tyarn
+# ENV PATH=$PATH:/usr/local/bin/
 
 # https://github.com/docker-library/php/blob/86c8ec4d387132b65dbe6c5ab1747f858e03852e/7.4/buster/apache/Dockerfile
 
@@ -185,7 +186,6 @@ RUN set -eux; \
 	apt-mark manual $savedAptMark > /dev/null; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
 
-ENV PATH=$PATH:/usr/local/bin/
 COPY docker-php-source /usr/local/bin/
 
 RUN set -eux; \
