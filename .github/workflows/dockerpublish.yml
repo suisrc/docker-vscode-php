@@ -1,0 +1,42 @@
+# github ci
+name: Docker
+
+on:
+  #release:
+  #  types: [published]
+  push:
+    branches: [ master ]
+
+env:
+  GITHUB_IMAGE_NAME: vscode
+  DOCKER_IMAGE_NAME: suisrc/vscode
+  DOCKER_VERSION: 1.45.1-01
+  GITHUB_REGISTRY: docker.pkg.github.com
+  QUAY_REGISTRY: quay.io
+  DOCKER_REGISTRY: docker.io
+  ALIYUN_REGISTRY: registry.cn-hongkong.aliyuncs.com
+
+jobs:
+  debian-php:
+    #if: false
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: |
+          docker build ./ --file ./debian.Dockerfile --tag image
+
+      - name: Push aliyun image
+        run: |
+          REGISTRY_URL=$ALIYUN_REGISTRY
+          echo "${{ secrets.ALIYUN_TOKEN }}" | docker login $REGISTRY_URL -u ${{ secrets.ALIYUN_USER }} --password-stdin
+
+          IMAGE_ID=$REGISTRY_URL/$DOCKER_IMAGE_NAME
+          echo IMAGE_ID=$IMAGE_ID
+          VERSION=$DOCKER_VERSION-${{ github.job }}
+          echo VERSION=$VERSION
+
+          docker tag image $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
