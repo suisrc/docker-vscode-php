@@ -328,5 +328,4 @@ RUN mkdir -p "/etc/s6/apache2" && \
     echo "#!/usr/bin/env sh\nexec code-server --bind-addr 0.0.0.0:7000 --disable-telemetry /var/www/html" > /etc/s6/coder/run && \
     chmod +x /etc/s6/coder/run
 
-ENTRYPOINT []
-CMD ["s6-svscan" "/etc/s6"]
+CMD ["s6-svscan", "/etc/s6"]
