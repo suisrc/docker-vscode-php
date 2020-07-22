@@ -26,7 +26,12 @@ jobs:
 
       - name: Build image
         run: |
-          docker build ./ --file ./debian.Dockerfile --tag image
+          REGISTRY_URL=$GITHUB_REGISTRY
+          DOCKER_BOS=${{ github.job }}
+          DOCKER_BOS=${DOCKER_BOS%%-*}
+
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login $REGISTRY_URL -u ${{ github.actor }} --password-stdin
+          docker build ./ --file ./$DOCKER_BOS.Dockerfile --tag image
 
       - name: Push aliyun image
         run: |
